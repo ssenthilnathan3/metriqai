@@ -18,7 +18,7 @@ COPY frontend/ ./
 
 # Install dependencies and build frontend
 RUN npm i --legacy-peer-deps
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 RUN npm run build
 
 # Use Python image for backend and serving
