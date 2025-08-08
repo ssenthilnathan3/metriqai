@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: mlbenchmark
+    env: docker
+    region: oregon
+    plan: starter
+    healthCheckPath: /health
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 8000
+      - key: WORKERS
+        value: 4
+      - key: CACHE_TTL_MINUTES
+        value: 60
+
+    # Automatic deploys and scaling
+    autoDeploy: true
+    numInstances: 1
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+      targetMemoryPercent: 80
+      targetCPUPercent: 80
+
+    # Health check configuration
+    healthCheck:
+      httpPath: /health
+      port: 80
+      initialDelay: 30s
+      period: 15s
+      timeout: 5s
+      failureThreshold: 3
+      successThreshold: 1
+
+    # Disk configuration
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
